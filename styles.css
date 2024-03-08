@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --cell-size: 100px;
+  --marker-size: calc(var(--cell-size) * 0.9);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.cell.cross,
+.cell.circle {
+  cursor: not-allowed;
+}
+
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+  border-bottom: none;
+}
+
+/* styling the cross */
+
+.cell.cross::before,
+.cell.cross::after,
+.board.cross .cell:not(.cross):not(.circle):hover::before,
+.board.cross .cell:not(.cross):not(.circle):hover::after {
+  content: "";
+  width: calc(var(--marker-size) * 0.15);
+  height: var(--marker-size);
+  background-color: black;
+  position: absolute;
+}
+
+.cell.cross::before,
+.board.cross .cell:not(.cross):not(.circle):hover::before {
+  transform: rotate(45deg);
+}
+
+.cell.cross::after,
+.board.cross .cell:not(.cross):not(.circle):hover::after {
+  transform: rotate(-45deg);
+}
+
+/* styling the circle */
+
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.cross):not(.circle):hover::before,
+.board.circle .cell:not(.cross):not(.circle):hover::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cell.circle::before,
+.board.circle .cell:not(.cross):not(.circle):hover::before {
+  background-color: black;
+  width: var(--marker-size);
+  height: var(--marker-size);
+}
+
+.cell.circle::after,
+.board.circle .cell:not(.cross):not(.circle):hover::after {
+  background-color: white;
+  width: calc(var(--marker-size) * 0.7);
+  height: calc(var(--marker-size) * 0.7);
+}
+
+/* changing background color when we hover */
+
+.board.cross .cell:not(.cross):not(.circle):hover::before,
+.board.cross .cell:not(.cross):not(.circle):hover::after,
+.board.circle .cell:not(.cross):not(.circle):hover::before {
+  background-color: rgba(219, 208, 208, 0.941);
+}
+
+/* styling the winning message prompt */
+
+.winning-msg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+#winning-msg-text {
+  color: white;
+  font-size: 4rem;
+}
+
+.winning-msg #restart-btn {
+  font-size: 2rem;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  background-color: rgba(227, 214, 214, 0.8);
+}
+
+.winning-msg #restart-btn:hover {
+  background-color: white;
+}
+
+.winning-msg.show {
+  display: flex;
+}
